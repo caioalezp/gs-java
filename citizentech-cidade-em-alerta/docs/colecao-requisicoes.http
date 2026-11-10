@@ -1,0 +1,81 @@
+### Coleção de requisições (IntelliJ HTTP Client / VS Code REST Client)
+### Troque a variável abaixo pelo link do deploy no Render para testar em produção.
+@base = http://localhost:8080
+
+### Saúde da aplicação
+GET {{base}}/actuator/health
+
+### ---------- Regiões ----------
+GET {{base}}/regioes
+
+###
+POST {{base}}/regioes
+Content-Type: application/json
+
+{ "nome": "Jardim Novo", "cidade": "Osasco" }
+
+###
+PUT {{base}}/regioes/1
+Content-Type: application/json
+
+{ "nome": "Centro", "cidade": "Osasco" }
+
+###
+DELETE {{base}}/regioes/3
+
+### ---------- Microrregiões ----------
+GET {{base}}/micro-regioes?regiaoId=1
+
+###
+POST {{base}}/micro-regioes
+Content-Type: application/json
+
+{ "nome": "Rua Nova - Baixada", "latitude": -23.5311, "longitude": -46.7901, "capacidadeEscoamento": 35, "regiaoId": 1 }
+
+###
+GET {{base}}/micro-regioes/prioridade
+
+### ---------- Sensores e leituras ----------
+GET {{base}}/sensores
+
+###
+POST {{base}}/leituras
+Content-Type: application/json
+
+{ "sensorId": 1, "valor": 55.0, "unidade": "mm/h" }
+
+###
+GET {{base}}/leituras?sensorId=1
+
+### ---------- Moradores e relatos ----------
+POST {{base}}/moradores
+Content-Type: application/json
+
+{ "nome": "Diego Rocha", "email": "diego.rocha@exemplo.com", "telefone": "11999990004", "microRegiaoId": 1 }
+
+###
+POST {{base}}/relatos
+Content-Type: application/json
+
+{ "moradorId": 1, "microRegiaoId": 1, "tipo": "ALAGAMENTO", "descricao": "Agua subindo na rua." }
+
+### ---------- Alerta Antecipado ----------
+POST {{base}}/alertas/calcular/1
+
+###
+GET {{base}}/alertas?microRegiaoId=1
+
+###
+POST {{base}}/alertas/1/equipes/1
+
+###
+DELETE {{base}}/alertas/1/equipes/1
+
+### ---------- Erros esperados ----------
+GET {{base}}/regioes/9999
+
+###
+POST {{base}}/regioes
+Content-Type: application/json
+
+{ "nome": "", "cidade": "" }
